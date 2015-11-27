@@ -1413,6 +1413,10 @@ void cm_rtpbcast_incoming_rtcp(janus_plugin_session *handle, int video, char *bu
 		JANUS_LOG(LOG_HUGE, "REMB for this PeerConnection: %"SCNu64"\n", bw);
 		sessid->remb = bw;
 
+		FILE *fp=fopen("/tmp/stats.csv", "a");
+		fprintf(fp,"%lld, %lld, %lld", GPOINTER_TO_UINT(handle), janus_get_monotonic_time(), bw);
+		fclose(fp);
+
 		/* If the session is watching something, let's see if it needs switching */
 		if (sessid->source) {
 			/* Switching if remb falls withing the bands of upgrade and downgrade averages */
